@@ -1,0 +1,12 @@
+services:
+  blog:
+    image: tianheg/hugo
+    container_name: es_live
+    restart: unless-stopped
+    volumes:
+      - ".:/src"
+    ports:
+      - 1314:1313
+    environment:
+      - HUGO_WATCH=true
+      - HUGO_BASEURL=http://127.0.0.1
