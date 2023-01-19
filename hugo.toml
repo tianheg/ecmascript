@@ -17,9 +17,15 @@ metaDataFormat = "toml"
   disableMermaid = false
   customMermaidURL = "https://unpkg.com/mermaid@8.8.0/dist/mermaid.min.js"
   titleSeparator = "::"
+  disableLanguageSwitchingButton = true
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-tags'></i> Tags"
+url = "/tags"
+weight = 30
 
 [Languages]
 [Languages.en]
