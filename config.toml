@@ -1,11 +1,10 @@
-baseURL = "/"
+baseURL = "https://es.tianheg.org/"
 languageCode = "en-US"
 defaultContentLanguage = "en"
 
 title = "Hugo Learn Documentation"
 theme = "learn"
 metaDataFormat = "toml"
-defaultContentLanguageInSubdir= true
 
 [params]
   editURL = "https://github.com/matcornic/hugo-theme-learn/edit/master/exampleSite/content/"
