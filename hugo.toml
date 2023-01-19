@@ -2,57 +2,21 @@ baseURL = "https://es.tianheg.org/"
 languageCode = "en-US"
 defaultContentLanguage = "en"
 
-title = "ECMAScript"
+title = "ECMAScript manual"
 theme = "learn"
 metaDataFormat = "toml"
 
 [params]
-  editURL = "https://github.com/matcornic/hugo-theme-learn/edit/master/exampleSite/content/"
-  description = "Documentation for Hugo Learn Theme"
-  author = "Mathieu Cornic"
+  editURL = "https://github.com/tianheg/ecmascript/edit/main/content/"
+  description = "My ECMAScript manual"
+  author = "tianheg"
   showVisitedLinks = true
   disableBreadcrumb = false
   disableNextPrev = false
   disableLandingPageButton = true
   disableMermaid = false
   customMermaidURL = "https://unpkg.com/mermaid@8.8.0/dist/mermaid.min.js"
-  titleSeparator = "::"
   disableLanguageSwitchingButton = true
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
-
-[[menu.shortcuts]]
-name = "<i class='fas fa-tags'></i> Tags"
-url = "/tags"
-weight = 30
-
-[Languages]
-[Languages.en]
-title = "Documentation for Hugo Learn Theme"
-weight = 1
-languageName = "English"
-landingPageURL = "/en"
-landingPageName = "<i class='fas fa-home'></i> Home"
-
-[[Languages.en.menu.shortcuts]]
-name = "<i class='fab fa-fw fa-github'></i> GitHub repo"
-identifier = "ds"
-url = "https://github.com/matcornic/hugo-theme-learn"
-weight = 10
-
-[[Languages.en.menu.shortcuts]]
-name = "<i class='fas fa-fw fa-camera'></i> Showcases"
-url = "showcase"
-weight = 11
-
-[[Languages.en.menu.shortcuts]]
-name = "<i class='fas fa-fw fa-bookmark'></i> Hugo Documentation"
-identifier = "hugodoc"
-url = "https://gohugo.io/"
-weight = 20
-
-[[Languages.en.menu.shortcuts]]
-name = "<i class='fas fa-fw fa-bullhorn'></i> Credits"
-url = "/credits"
-weight = 30
