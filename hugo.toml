@@ -4,13 +4,12 @@ defaultContentLanguage = "en"
 
 title = "ECMAScript manual"
 theme = "learn"
-metaDataFormat = "toml"
 
 [params]
   editURL = "https://github.com/tianheg/ecmascript/edit/main/content/"
   description = "My ECMAScript manual"
   author = "tianheg"
-  showVisitedLinks = true
+  showVisitedLinks = false
   disableBreadcrumb = false
   disableNextPrev = false
   disableLandingPageButton = true
