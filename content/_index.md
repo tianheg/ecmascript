@@ -1,5 +1,5 @@
 ---
-title: "ECMAScirpt"
+title: "ECMAScript"
 ---
 
-# ECMAScirpt
+目前还无法深入理解，只能先记住。
