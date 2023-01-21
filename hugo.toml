@@ -1,5 +1,5 @@
 baseURL = "https://es.tianheg.org/"
-languageCode = "en-US"
+languageCode = "zh-CN"
 defaultContentLanguage = "en"
 
 title = "ECMAScript manual"
