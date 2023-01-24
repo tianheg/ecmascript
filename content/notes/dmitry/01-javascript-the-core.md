@@ -36,8 +36,37 @@ var foo = {
 
 什么是继承？继承就是，对象能够从自己的原型获得属性，而该原型又能从它的原型获得属性。
 
-如果我们有二个对象，且这两个对象只有少部分属性不同，那么我们何不新建一个对象，将相同的属性包含进去，再通过构造函数新建不同的二个对象呢？
+如果我们有两个对象，且这两个对象只有少部分属性不同，那么我们何不新建一个对象，将相同的属性包含进去，再通过构造函数新建不同的两个对象呢？
 
 在一些基于类的系统中，这种代码复用方式被称为「基于类的继承」。
 
 ECMAScript 有自己的代码复用逻辑，跟类并无区别。这种继承方式由原型链实现，称为「delegation based inheritance」（特定于 ECMAScript 的话，可称为「基于原型的继承」）。
+
+```js
+var a = {
+  x: 10,
+  calculate: function (z) {
+    return this.x + this.y + z;
+  }
+};
+var b = {
+  y: 20,
+  __proto__: a
+};
+var c = {
+  y: 30,
+  __proto__: a
+};
+
+b.calculate(30);
+c.calculate(40);
+```
+
+如代码所示，对象 b 和 c 从 a 处继承了 calculate() 函数。
+
+很简单的规则：如果对象自身并没有相应的属性或方法，那它就会在原型链中寻找。
+
+参考资料：
+
+1. <https://en.wikipedia.org/wiki/Prototype-based_programming>
+2. <https://en.wikipedia.org/wiki/Class-based_programming>
