@@ -1,0 +1,165 @@
+#+TITLE: JavaScript. The Core.
+#+WEIGHT: 10
+
+{{< feynman >}}
+
+[[http://dmitrysoshnikov.com/ecmascript/javascript-the-core/][JavaScript. The Core.]]
+
+* 1. 一个对象
+
+ECMAScript 是一种面向对象的语言，对象是这门语言的基础。那么，什么是对象，它是如何定义的？
+
+一个对象是很多属性的组合，除此之外，它还有一个名为 prototype 的子对象。prototype 要么是一个对象，要么是一个 null 值。
+
+对象的原型由内部的 =[[Prototype]]= 引用。但实际使用时，是另一种形式—— =__<internel-property>__= 下划线标记，特别是对于原型来说： =__proto__= 。
+
+#+begin_src js
+var foo = {
+  x: 10,
+  y: 20
+}
+#+end_src
+
+如下图所示，对象 foo 由三部分构成——x，y， =__proto__= 。前两个是公开的，最后一个是隐藏的。而 =__proto__= 对应之后的 foo 的原型。
+
+[[/images/javascript-the-core-0.svg]]
+
+这些原型的作用是什么？原作者认为「原型链（prototype chain）」能回答这个问题。
+
+* 2. 一个原型链
+一个对象有名为 prototype 的子对象，而这个子对象又会有自己的 prototype 子对象，由此形成一条围绕 prototype 的原型链条。
+
+原型链条能够实现继承和分享属性。
+
+什么是继承？继承就是，对象能够从自己的原型获得属性，而该原型又能从它的原型获得属性。
+
+如果我们有两个对象，且这两个对象只有少部分属性不同，那么我们何不新建一个对象，将相同的属性包含进去，再通过构造函数新建不同的两个对象呢？
+
+在一些基于类的系统中，这种代码复用方式被称为「基于类的继承」。
+
+ECMAScript 有自己的代码复用逻辑，跟类并无区别。这种继承方式由原型链实现，称为「delegation based inheritance」（特定于 ECMAScript 的话，可称为「基于原型的继承」）。
+
+#+begin_src js
+var a = {
+  x: 10,
+  calculate: function (z) {
+    return this.x + this.y + z;
+  }
+};
+var b = {
+  y: 20,
+  __proto__: a
+};
+var c = {
+  y: 30,
+  __proto__: a
+};
+
+b.calculate(30);
+c.calculate(40);
+#+end_src
+
+如代码所示，对象 b 和 c 从 a 处继承了 calculate() 函数。
+
+很简单的规则：如果对象自身并没有相应的属性或方法，那它就会在原型链中寻找。第一个找到的属性或方法会被应用。因此，一个被找到的属性被称为「继承属性」。如果查询过整个原型链都没有找到，就返回 =undefined= 。
+
+要注意， =this= 和当前对象的值有关，而和继承属性的对象无关。在上面的例子里， =this.y= 是从 b 和 c 获得，而不是 a。但 =this.x= 是从 a 获得，因为在当前对象找不到对应的 a 值，根据原型链机制，会在 b 和 c 的原型中找到 a 。
+
+如果没有为一个对象设置原型，那 =__proto__= 的默认值是 =Object.prototype= 。对象 =Object.prototype= 也有一个 =__proto__= ，它是原型链的终点，值为 null。
+
+下图显示了 a、b 和 c 对象的继承层次结构：
+
+[[/images/javascript-the-core-1.svg]]
+
+注意：ES5 提供了 =Object.create= 函数，亟此作为一种实现基于原型继承的可选方式。
+
+#+BEGIN_SRC js
+var a = {
+  x: 10,
+  calculate: function (z) {
+    console.log(this.x + this.y + z)
+  }
+}
+
+var b = Object.create(a, { y: { value: 20 }})
+var c = Object.create(a, { y: { value: 30 }})
+
+b.calculate(30) // 60
+c.calculate(40) // 80
+#+END_SRC
+
+ES6 虽然标准化了 =__proto__= 的行为，但它仍可用于对象的初始化。
+
+很多情况中，我们需要相同或类似的状态结构（比如，一组相同属性），它们有着不同的状态值。这种情况下，我们可以使用「构造器函数」，它能通过特定模式（相同的属性，不同的属性值）来创建对象。
+
+* 3. 构造器
+
+构造器函数不仅创建指定模型的对象，还自动为新建的对象设置原型对象。这个原型对象存储在 =ConstructorFunction.prototype= 属性中。
+
+比如，我们可以重写上面的例子。a 的作用被 ~Foo.prototype~ 替代了：
+
+#+BEGIN_SRC js
+function Foo(y) {
+  this.y = y
+}
+Foo.prototype.x = 10
+Foo.prototype.calculate = function (z) {
+  return this.x + this.y + z
+}
+
+var b = new Foo(20)
+var c = new Foo(30)
+
+b.calculate(30)
+c.calculate(40)
+
+console.log(
+  b.__proto__ === Foo.prototype,
+  c.__proto__ === Foo.prototype,
+  b.constructor === Foo,
+  c.constructor === Foo,
+  Foo.prototype.constructor === Foo,
+  b.calculate === b.__proto__.calculate,
+  b.__proto__.calculate === Foo.prototype.calculate
+)
+#+END_SRC
+
+下图是代码的关系图：
+
+[[/images/javascript-the-core-2.svg]]
+
+这张图片再一次说明：每个对象都有原型。
+
+如果对构造器函数 =Foo= 进行严格分类的话，它是构造器函数和原型对象的结合，这种结合可称为「class」。
+
+注意：ES6 中「class」的概念被标准化了，由基于构造器函数的语法糖实现。从这种角度看原型链，它就是基于类继承的一个实现细节。
+
+#+BEGIN_SRC js
+// ES6
+class Foo {
+  constructor(name) {
+    this._name = name
+  }
+  getName() {
+    return this._name
+  }
+}
+
+class Bar extends Foo {
+  getName() {
+    return super.getName() + ' Doe'
+  }
+}
+
+var bar = new Bar('John')
+console.log(bar.getName()) // John Doe
+#+END_SRC
+
+* 4. 执行上下文堆栈
+
+英文是 Execution context stack，另一种英文解释是 runtime program execution。
+
+参考资料
+
+1. [[https://en.wikipedia.org/wiki/Prototype-based_programming]]
+2. [[https://en.wikipedia.org/wiki/Class-based_programming]]
