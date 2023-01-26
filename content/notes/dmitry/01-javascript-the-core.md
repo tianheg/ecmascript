@@ -5,7 +5,7 @@ weight: 10
 
 {{< feynman >}}
 
-{{% button href="http://dmitrysoshnikov.com/ecmascript/javascript-the-core/" %}}JavaScript. The Core.{{% /button %}}
+[JavaScript. The Core.](http://dmitrysoshnikov.com/ecmascript/javascript-the-core/)
 
 ## 1. 一个对象
 
