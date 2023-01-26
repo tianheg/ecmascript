@@ -64,9 +64,17 @@ c.calculate(40);
 
 如代码所示，对象 b 和 c 从 a 处继承了 calculate() 函数。
 
-很简单的规则：如果对象自身并没有相应的属性或方法，那它就会在原型链中寻找。
+很简单的规则：如果对象自身并没有相应的属性或方法，那它就会在原型链中寻找。第一个找到的属性或方法会被应用。因此，一个被找到的属性被称为「继承属性」。如果查询过整个原型链都没有找到，就返回 `undefined`。
 
-参考资料：
+要注意，`this` 和当前对象的值有关，而和继承属性的对象无关。在上面的例子里，`this.y` 是从 `b` 和 `c` 获得，而不是 `a`。但 `this.x` 是从 `a` 获得，因为在当前对象找不到对应的 `a` 值，根据原型链机制，会在 `b` 和 `c` 的原型中找到 `a`。
+
+如果没有为一个对象设置原型，那 `__proto__` 的默认值是 `Object.prototype`。对象 `Object.prototype` 也有一个 `__proto__`，它是原型链的终点，值为 null。
+
+下图显示了 a、b 和 c 对象的继承层次结构：
+
+注意：
+
+参考资料
 
 1. <https://en.wikipedia.org/wiki/Prototype-based_programming>
 2. <https://en.wikipedia.org/wiki/Class-based_programming>
