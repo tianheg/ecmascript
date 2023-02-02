@@ -159,6 +159,27 @@ console.log(bar.getName()) // John Doe
 
 英文是 Execution context stack，另一种英文解释是 runtime program execution。
 
+存在三种 ECMAScript 代码：全局范围、函数级、eval 级。每段代码都在各自上下文中执行。全局上下文只有一个，函数和 eval 上下文可以有多个。函数的每次调用，都是一次进入函数上下文判断函数代码类型的过程。eval 上下文和函数上下文类似。
+
+注意，一个函数可能产生无穷尽的上下文，因为对函数的每次调用都会生成一个新的上下文，它有着新的上下文状态（参数值变化了）：
+
+#+BEGIN_SRC js
+function foo(bar) {}
+
+foo(10);
+foo(20);
+foo(30);
+#+END_SRC
+
+一个执行上下文会激活其他上下文。比如，一个函数调用了另一个函数（或者全局上下文调用全局函数）。从逻辑上来看，这些是基于堆栈实现的，我们称之为执行上下文堆栈（execution context stack）。
+
+- caller 能激活其他上下文
+- callee 是被激活的上下文
+
+它们的称呼不固定，也就说，一个上下文可能既是一个 caller，也是一个 callee。比如，一个函数被全局上下文调用了，与此同时它也会调用自己内部的函数。
+
+当 caller 调用 callee 时，caller 会暂停执行当前上下文的代码，进入到此时的 callee 的上下文中（pass the control flow to the callee）。callee 被推入堆栈，变成当前活跃的执行上下文。在 callee 执行结束（callee 的上下文结束）以后，将控制权返回 caller，继续执行 caller 的上下文，直到 caller 的结束。callee 被调用方可以简单地返回或退出异常。抛出但未捕获的异常会使运行过程从一个或多个上下文退出（从堆栈弹出）。
+
 参考资料
 
 1. [[https://en.wikipedia.org/wiki/Prototype-based_programming]]
