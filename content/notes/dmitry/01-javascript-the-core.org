@@ -261,6 +261,16 @@ foo(10, 20)
 
 [[/images/javascript-the-core-7.svg]]
 
+同样，函数表达式 =baz= 不包含在变量/活动对象中。
+
+注意，在 ES5 中，可变对象和活动对象的概念被组合到词法环境模型中。
+
+在 ECMAScript 中，我们可以使用内部函数，在这些内部函数中，我们可以引用父函数的变量或全局上下文的变量。当我们将一个变量对象命名为上下文的范围对象时，类似于上面讨论的原型链，存在所谓的作用域链（Scope chain）。
+
+* 8. 作用域链
+
+
+
 参考资料
 
 1. [[https://en.wikipedia.org/wiki/Prototype-based_programming]]
