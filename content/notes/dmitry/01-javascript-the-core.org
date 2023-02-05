@@ -293,7 +293,34 @@ var x = 10
 })()
 #+END_SRC
 
+我们可以通过隐式 =__parent__=  属性假定作用域链对象之间的链接，该属性引用链中的下一个对象。作用域链的另一种表示形式可以是简单的数组。使用 =__parent__= 概念，我们可以用下图表示上面的示例（因此父变量对象保存在函数的 =[[Scope]]=  属性中）：
 
+[[/images/javascript-the-core-8.svg]]
+
+在代码执行时，作用域链可以使用 =with= 语句和 =catch=  子句对象进行扩展。由于这些对象是简单的对象，它们可能有原型（和原型链）。这个事实导致作用域链查找是二维的：(1) 首先考虑作用域链链接，然后 (2) 对每个作用域链的链接——进入链接原型链的深度（如果链接有原型的话）。
+
+例如：
+
+#+BEGIN_SRC js
+Object.prototype.x = 10
+
+var w = 20
+var y = 30
+
+
+;(function foo() {
+  var w = 40
+  var x = 100
+  
+  with ({z: 50}) {
+    console.log(w, x, y, z)
+  }
+  
+  console.log(x, w)
+  
+  console.log(window.w)
+})()
+#+END_SRC
 
 参考资料
 
