@@ -459,6 +459,47 @@ data[2]()
 =this= 值是与执行上下文相关的特殊对象。因此，它可以被命名为上下文对象（也就是说，执行上下文在其中被激活的对象）。
 #+END_QUOTE
 
+任何对象都可以用作上下文的 =this= 值。一个重要的注意事项是， =this= 值是执行上下文的属性，但不是变量对象的属性。
+
+此特性非常重要，因为与变量相比， =this= 值从不参与标识符解析过程。例如，当访问代码中的 =this= 时，它的值直接从执行上下文获取，而不需要进行任何作用域链查找。 =this= 的值只在进入上下文时确定一次。
+
+注意：在 ES6 中， =this= 实际上成为了词法环境的一个属性，即 ES3 术语中变量对象的属性。这样做是为了支持箭头函数，这些函数具有从父上下文继承的词法 =this= 。
+
+顺便说一下，与 ECMAScript 不同，Python 的 =self= 方法参数是一个简单的变量，解析结果相同，甚至可以在执行过程中更改为另一个值。在 ECMAScript 中，不可能将新值赋给 =this= ，因为它不是变量！也不放在变量对象中。
+
+在全局上下文中，当前的 =this= 值是全局对象本身（也就是说，这里的 =this= 值等于变量对象）：
+
+#+BEGIN_SRC js
+var x = 10
+console.log(
+  x,
+  this.x,
+  window.x
+)
+#+END_SRC
+
+对于函数上下文，每个函数调用中的 =this= 值可能不同。这里 =this= 值是由调用方通过调用表达式的形式提供的（即如何激活函数的方式）。例如，下面的函数 =foo= 是一个被调用方，从全局上下文调用，该上下文是一个调用方。让我们看看这个例子，对于一个函数的相同代码，不同调用（函数激活的不同方式）中的 =this= 值是如何由调用者以不同的方式提供的：
+
+#+BEGIN_SRC js
+function foo() {
+  console.log(this)
+}
+foo()
+foo.prototype.constructor()
+var bar = {
+  baz: foo
+}
+
+bar.baz();
+(bar.baz)();
+(bar.baz = bar.baz)();
+(bar.baz, bar.baz)();
+(false || bar.baz)();
+
+var otherFoo = bar.baz
+otherFoo()
+#+END_SRC
+
 参考资料
 
 1. [[https://en.wikipedia.org/wiki/Prototype-based_programming]]
