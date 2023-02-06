@@ -5,6 +5,8 @@
 
 [[http://dmitrysoshnikov.com/ecmascript/javascript-the-core/][JavaScript. The Core.]]
 
+本篇的 ES 版本为 3。
+
 * 1. 一个对象
 
 ECMAScript 是一种面向对象的语言，对象是这门语言的基础。那么，什么是对象，它是如何定义的？
@@ -321,6 +323,10 @@ var y = 30
   console.log(window.w)
 })()
 #+END_SRC
+
+上述代码的图示结构：
+
+[[/images/javascript-the-core-9.svg]]
 
 参考资料
 
