@@ -406,6 +406,59 @@ console.log(
 
 [[/images/javascript-the-core-10.svg]]
 
+这个特性与在循环中创建多个函数的混淆恰好相关。在已创建的函数中使用循环计数器，当所有函数在函数中具有相同的计数器值时，一些程序员经常会得到意外的结果。现在应该很清楚为什么会这样ーー因为所有这些函数都具有相同的 =[[Scope]]=  ，其中循环计数器具有最后赋值。
+
+#+BEGIN_SRC js
+var data = []
+
+for (var k = 0; k < 3; k++) {
+  data[k] = function () {
+    console.log(k)
+  }
+}
+data[0]()
+data[1]()
+data[2]()
+#+END_SRC
+
+有几种技术可以解决这个问题。其中一种技术是在作用域链中提供一个附加对象ーー例如使用附加函数：
+
+#+BEGIN_SRC js
+var data = []
+
+for (var k = 0; k < 3; k++) {
+  data[k] = (function (x) {
+    return function() {
+      console.log(x)
+    }
+  })(k)
+}
+data[0]()
+data[1]()
+data[2]()
+#+END_SRC
+
+注意：ES6 引入了块范围绑定。这是通过 =let= 或 =const= 关键字完成的。上面的例子现在可以很容易和方便地改写为：
+
+#+BEGIN_SRC js
+let data = []
+
+for (let k = 0; k < 3; k++) {
+  data[k] = function () {
+    console.log(k)
+  }
+}
+data[0]()
+data[1]()
+data[2]()
+#+END_SRC
+
+* 10. =this= 值
+
+#+BEGIN_QUOTE
+=this= 值是与执行上下文相关的特殊对象。因此，它可以被命名为上下文对象（也就是说，执行上下文在其中被激活的对象）。
+#+END_QUOTE
+
 参考资料
 
 1. [[https://en.wikipedia.org/wiki/Prototype-based_programming]]
